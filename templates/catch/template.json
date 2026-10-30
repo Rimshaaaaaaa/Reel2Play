@@ -1,0 +1,53 @@
+{
+  "id": "catch",
+  "name": "Catch",
+  "plan": "Build",
+  "description": "The shop's product falls from the top. The player slides a shopping bag left and right to catch it and dodges grey 'dud' pebbles.",
+  "control": "Drag or tap left and right",
+  "product_role": "The item to catch",
+  "ends_when": "The goal number of catches, or the time limit",
+  "good_for": [
+    "bakery_food",
+    "cosmetics",
+    "other"
+  ],
+  "uses_photo": false,
+  "uses_more_products": true,
+  "params": {
+    "goal": {
+      "easy": 8,
+      "normal": 10,
+      "hard": 12,
+      "min": 6,
+      "max": 14
+    },
+    "fall_speed": {
+      "easy": 175,
+      "normal": 215,
+      "hard": 260,
+      "min": 140,
+      "max": 320
+    },
+    "spawn_every": {
+      "easy": 1.6,
+      "normal": 1.2,
+      "hard": 1.0,
+      "min": 0.7,
+      "max": 1.8
+    },
+    "decoy_share": {
+      "easy": 0.1,
+      "normal": 0.25,
+      "hard": 0.35,
+      "min": 0.0,
+      "max": 0.45
+    },
+    "time_limit": {
+      "easy": 25,
+      "normal": 24,
+      "hard": 24,
+      "min": 16,
+      "max": 26
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "colours",
+  "name": "Colour picker",
+  "plan": "Stretch",
+  "description": "Shoppers come to the counter, each wishing for the product in a colour. The player taps the matching swatch; the product changes colour on its stand and the shopper skips away happy.",
+  "control": "Tap swatches",
+  "product_role": "The product, recoloured",
+  "ends_when": "Every shopper has their colour, or the time limit",
+  "good_for": [
+    "clothing",
+    "shoes",
+    "phone_accessories"
+  ],
+  "uses_photo": false,
+  "params": {
+    "shoppers": {
+      "easy": 6,
+      "normal": 6,
+      "hard": 7,
+      "min": 5,
+      "max": 8
+    },
+    "time_limit": {
+      "easy": 30,
+      "normal": 30,
+      "hard": 28,
+      "min": 22,
+      "max": 30
+    }
+  },
+  "tester_pace_seconds": 0.6
+}

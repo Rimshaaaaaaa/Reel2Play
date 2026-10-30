@@ -1,0 +1,13 @@
+.status {
+  display: grid;
+  gap: 10px;
+  max-width: 660px;
+}
+
+.status-failed {
+  border-color: var(--danger);
+}
+
+.status .btn {
+  justify-self: start;
+}

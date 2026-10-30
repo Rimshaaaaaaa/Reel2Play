@@ -1,0 +1,61 @@
+# Which endpoint and model does each job, in failover order, and how hard it reasons.
+# Endpoint URLs, keys and model ids come from settings (environment variables), never from here.
+# Prices are used by the cost meter (feature 48). Check them against each provider's pricing page.
+
+[endpoints.baseten_spark]
+label = "Muse Spark Open on Baseten"
+base_url_setting = "baseten_base_url"
+api_key_setting = "baseten_api_key"
+model_setting = "spark_model_baseten"
+reasoning_style = "reasoning_effort"
+timeout_s = 180
+usd_per_m_input = 1.25
+usd_per_m_output = 4.25
+
+[endpoints.fireworks_spark]
+label = "Muse Spark Open on Fireworks"
+base_url_setting = "fireworks_base_url"
+api_key_setting = "fireworks_api_key"
+model_setting = "spark_model_fireworks"
+reasoning_style = "reasoning_effort"
+timeout_s = 180
+usd_per_m_input = 1.25
+usd_per_m_output = 4.25
+
+[endpoints.modal_glimmer]
+label = "Muse Glimmer on Modal"
+base_url_setting = "glimmer_base_url"
+api_key_setting = "glimmer_api_key"
+model_setting = "glimmer_model"
+reasoning_style = "system_prompt"
+timeout_s = 240
+# Self-hosted on a Modal GPU: billed per second of GPU time, not per token.
+usd_per_second = 0.0011
+
+[roles.director]
+description = "Watches the video, writes the game config, fixes failed gates"
+endpoints = ["baseten_spark", "fireworks_spark"]
+reasoning = "high"
+max_tokens = 6000
+temperature = 0.6
+
+[roles.critic]
+description = "Checks screenshots against the real product and the offer"
+endpoints = ["baseten_spark", "fireworks_spark"]
+reasoning = "medium"
+max_tokens = 2000
+temperature = 0.2
+
+[roles.tester]
+description = "Plays each game from screenshots; Spark Open plays when Glimmer is not deployed"
+endpoints = ["modal_glimmer", "baseten_spark", "fireworks_spark"]
+reasoning = "high"
+max_tokens = 1500
+temperature = 1.0
+
+[roles.captions]
+description = "Captions, hashtags and the plain-words report"
+endpoints = ["baseten_spark", "fireworks_spark"]
+reasoning = "low"
+max_tokens = 1500
+temperature = 0.8

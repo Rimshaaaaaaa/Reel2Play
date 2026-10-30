@@ -1,0 +1,195 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  UV_PYTHON: "3.12"
+
+jobs:
+  api:
+    name: API (lint, types, tests)
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: engine/package-lock.json
+      - name: Build the game engine (the builder tests compile real games)
+        run: npm ci && npm run build
+        working-directory: engine
+      - run: uv sync --frozen
+      - name: Install Chromium for the play-test harness
+        run: uv run playwright install --with-deps chromium
+      - name: Create databases
+        run: |
+          psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE reel2play;"
+          psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE reel2play_test;"
+      - run: uv run ruff check src tests migrations
+      - run: uv run ruff format --check src tests migrations
+      - run: uv run mypy
+      - name: Migrations apply and match the models
+        run: uv run alembic upgrade head && uv run alembic check
+      - name: Tests with coverage (85% minimum)
+        run: uv run pytest --cov --cov-report=term-missing
+
+  engine:
+    name: Engine and templates (lint, types, unit, browser tests)
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: engine/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Every template loads, can be won, ends on the offer, stays under 2 MB
+        run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: engine-test-results
+          path: engine/test-results
+
+  web:
+    name: Web (lint, tests, build)
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+  workers:
+    name: Modal workers (lint, types, tests)
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: workers/modal
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - run: uv run ruff check . && uv run ruff format --check .
+      - run: uv run mypy
+      - run: uv run pytest
+
+  evaluation:
+    name: Evaluation harness on the mock model (synthetic videos)
+    needs: [api]
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    defaults:
+      run:
+        working-directory: api
+    env:
+      AI_MODE: mock
+      DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/reel2play_eval
+      WORKER_ENABLED: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: engine/package-lock.json
+      - run: npm ci && npm run build
+        working-directory: engine
+      - run: uv sync --frozen && uv run playwright install --with-deps chromium
+      - run: psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE reel2play_eval;"
+      - run: uv run alembic upgrade head
+      - name: Run the harness on eval/ci.json
+        run: uv run reel2play eval run ../eval/ci.json --out ../eval-results
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-report
+          path: eval-results
+
+  e2e:
+    name: End-to-end (Playwright)
+    needs: [api, web, engine]
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: uv sync --frozen && uv run playwright install --with-deps chromium
+        working-directory: api
+      - run: npm ci && npm run build
+        working-directory: engine
+      - run: npm ci && npx playwright install --with-deps chromium
+        working-directory: web
+      - run: psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE reel2play_e2e;"
+      - run: npx playwright test
+        working-directory: web
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: web/test-results

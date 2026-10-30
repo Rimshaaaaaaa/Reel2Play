@@ -1,0 +1,66 @@
+.upload {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(28px, 6vw, 72px);
+  align-items: start;
+}
+
+.upload-copy {
+  container-type: inline-size;
+  display: grid;
+  gap: 22px;
+}
+
+.upload-lede {
+  color: var(--muted);
+  font-size: var(--step-1);
+  line-height: 1.45;
+}
+
+/* "Already posted it?" sits above the form as a quiet, pressable strip. */
+.import-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  max-width: 660px;
+  padding: 12px 14px 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
+}
+
+.import-hint p {
+  color: var(--muted);
+}
+
+.import-hint .btn {
+  min-height: 40px;
+  padding: 9px 16px;
+  font-size: var(--step--1);
+}
+
+.upload-preview {
+  position: sticky;
+  top: 88px;
+  width: 300px;
+}
+
+@media (max-width: 860px) {
+  .upload {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-preview {
+    position: static;
+    justify-self: center;
+    width: min(220px, 70vw);
+  }
+}
+
+.catalog-choice,
+.lab-choice {
+  justify-self: start;
+  border-radius: var(--radius-control);
+}

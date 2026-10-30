@@ -1,0 +1,63 @@
+.phone {
+  margin: 0;
+  width: min(100%, 300px);
+  aspect-ratio: 9 / 19;
+  border-radius: 38px;
+  padding: 11px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 9px;
+  background: linear-gradient(160deg, oklch(0.34 0.012 260), oklch(0.2 0.012 260));
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.18),
+    inset 0 -2px 0 oklch(0 0 0 / 0.4),
+    0 6px 0 oklch(0.14 0.01 260),
+    0 30px 50px -28px var(--shadow);
+}
+
+/* The signboard: the shop's name painted on a green board, the page's one bold moment. */
+.phone-sign {
+  background: var(--accent);
+  color: var(--sign);
+  font: 800 1.02rem / 1.2 var(--font-display);
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 22px 22px 8px 8px;
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.25),
+    0 3px 0 var(--accent-edge);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phone-screen {
+  border-radius: 8px 8px 28px 28px;
+  background: oklch(0.28 0.02 265);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  color: oklch(0.9 0.01 265);
+  text-align: center;
+  font-size: var(--step--1);
+}
+
+.phone-screen video,
+.phone-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.phone-screen img.sprite {
+  object-fit: contain;
+  padding: 18%;
+  filter: drop-shadow(0 14px 18px oklch(0 0 0 / 0.45));
+}
+
+.phone-screen iframe.game {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #1d1f27;
+}

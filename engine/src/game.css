@@ -1,0 +1,433 @@
+/* Reel2Play game page. Neutral base, the shop's colours, tactile 3D controls. */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #1d1f27;
+  overscroll-behavior: none;
+}
+
+.r2p {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--r2p-primary) 22%, #2a2c36), #16171d);
+  font-family: var(--r2p-font);
+  color: var(--r2p-ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* The play field keeps 9:16 on every screen and never overflows it. */
+.r2p-stage {
+  position: relative;
+  width: min(100vw, calc(100dvh * 9 / 16));
+  aspect-ratio: 9 / 16;
+  container-type: size;
+  overflow: hidden;
+  background: var(--r2p-bg);
+  touch-action: none;
+}
+
+@media (min-aspect-ratio: 10 / 16) {
+  .r2p-stage {
+    border-radius: 18px;
+    box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.6);
+  }
+}
+
+.r2p-stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.r2p-hud {
+  position: absolute;
+  inset: 3cqw 3cqw auto;
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 2.5cqw;
+  pointer-events: none;
+}
+
+.r2p-hud[hidden],
+.r2p-card[hidden] {
+  display: none;
+}
+
+.r2p-timer {
+  height: 2.6cqw;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--r2p-ink) 14%, transparent);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.18);
+}
+
+.r2p-timer-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--r2p-accent), var(--r2p-primary));
+  transform-origin: inline-start;
+}
+
+.r2p-score,
+.r2p-mute,
+.r2p-cc {
+  min-width: 11cqw;
+  padding: 1.4cqw 3cqw;
+  border-radius: 99px;
+  background: var(--r2p-surface);
+  color: var(--r2p-ink);
+  font: 800 4.2cqw/1.1 var(--r2p-font);
+  text-align: center;
+  box-shadow: 0 0.9cqw 0 var(--r2p-surface-edge), 0 2cqw 4cqw -2cqw rgb(0 0 0 / 0.35);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+}
+
+.r2p-mute,
+.r2p-cc {
+  border: 0;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.r2p-mute[aria-pressed="true"] {
+  opacity: 0.55;
+}
+
+.r2p-card {
+  position: absolute;
+  inset: auto 5cqw 6cqh;
+  padding: 6cqw 6cqw 5cqw;
+  display: grid;
+  justify-items: center;
+  gap: 2.6cqw;
+  text-align: center;
+  border-radius: 7cqw;
+  background: color-mix(in srgb, var(--r2p-surface) 94%, transparent);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    0 2cqw 0 var(--r2p-surface-edge),
+    0 6cqw 10cqw -4cqw rgb(0 0 0 / 0.45);
+  animation: r2p-rise 320ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.r2p-end {
+  inset: 5cqh 5cqw;
+  align-content: center;
+}
+
+@keyframes r2p-rise {
+  from {
+    transform: translateY(6cqh) scale(0.96);
+    opacity: 0;
+  }
+}
+
+.r2p-card h1,
+.r2p-card h2 {
+  margin: 0;
+  font-size: 7.4cqw;
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--r2p-ink);
+}
+
+.r2p-card p {
+  margin: 0;
+  font-size: 4.4cqw;
+  line-height: 1.35;
+  color: var(--r2p-muted);
+}
+
+.r2p-hero {
+  max-width: 46cqw;
+  max-height: 20cqh;
+  object-fit: contain;
+  filter: drop-shadow(0 3cqw 3cqw rgb(0 0 0 / 0.28));
+}
+
+.r2p-end .r2p-hero {
+  max-height: 16cqh;
+}
+
+.r2p-card .r2p-product {
+  font-weight: 700;
+  color: var(--r2p-ink);
+}
+
+.r2p-card .r2p-offer {
+  padding: 1.6cqw 4cqw;
+  border-radius: 99px;
+  background: var(--r2p-accent);
+  color: var(--r2p-accent-ink);
+  font-weight: 900;
+  font-size: 5cqw;
+  box-shadow: 0 1cqw 0 color-mix(in srgb, var(--r2p-accent) 60%, black);
+}
+
+.r2p-card .r2p-price {
+  font-size: 7cqw;
+  font-weight: 900;
+  color: var(--r2p-ink);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.r2p-card .r2p-coupon strong {
+  color: var(--r2p-ink);
+  letter-spacing: 0.06em;
+}
+
+/* Tactile 3D button: a visible edge underneath, presses down when tapped. */
+.r2p-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 12cqw;
+  width: 100%;
+  padding: 3cqw 6cqw;
+  border: 0;
+  border-radius: 4.4cqw;
+  background: linear-gradient(180deg, var(--r2p-primary-hi), var(--r2p-primary));
+  color: var(--r2p-primary-ink);
+  font: 900 5.2cqw/1.1 var(--r2p-font);
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    0 1.6cqw 0 var(--r2p-primary-edge),
+    0 4cqw 6cqw -3cqw rgb(0 0 0 / 0.45);
+  transition: transform 80ms ease-out, box-shadow 80ms ease-out;
+}
+
+.r2p-btn:active {
+  transform: translateY(1.2cqw);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.25),
+    0 0.4cqw 0 var(--r2p-primary-edge),
+    0 2cqw 3cqw -2cqw rgb(0 0 0 / 0.4);
+}
+
+.r2p-btn:focus-visible,
+.r2p-mute:focus-visible,
+.r2p-cc:focus-visible {
+  outline: 0.8cqw solid var(--r2p-accent);
+  outline-offset: 0.8cqw;
+}
+
+.r2p-quiet {
+  min-height: 10cqw;
+  background: var(--r2p-surface);
+  color: var(--r2p-ink);
+  font-size: 4.4cqw;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--r2p-ink) 14%, transparent),
+    0 1.2cqw 0 var(--r2p-surface-edge);
+}
+
+.r2p-card .r2p-attribution {
+  font-size: 3.2cqw;
+  color: var(--r2p-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .r2p-card {
+    animation: none;
+  }
+
+  .r2p-btn {
+    transition: none;
+  }
+}
+
+/* --- Square and landscape pages (feature 18) ------------------------------------------
+ * The play field stays 9:16 and fills the height; the product and the offer sit beside it
+ * on a raised panel, so the same tested game works in a square feed or a wide website. */
+.r2p-frame {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2.4%;
+  padding: 2.4%;
+  box-sizing: border-box;
+  height: min(100dvh, 100vw);
+  aspect-ratio: 1;
+  container-type: size;
+}
+
+.r2p[data-layout="landscape"] .r2p-frame {
+  height: min(100dvh, calc(100vw * 9 / 16));
+  aspect-ratio: 16 / 9;
+}
+
+.r2p-frame .r2p-stage {
+  width: calc(100cqh * 9 / 16);
+  height: 100cqh;
+  border-radius: 3cqh;
+  box-shadow: 0 1.6cqh 3cqh -1cqh rgb(0 0 0 / 0.55);
+}
+
+.r2p-side {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 2cqh;
+  min-width: 0;
+  padding: 4cqh 3cqh;
+  border-radius: 3cqh;
+  background: linear-gradient(170deg, var(--r2p-surface), color-mix(in srgb, var(--r2p-surface) 82%, var(--r2p-primary)));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    0 1.2cqh 0 var(--r2p-surface-edge),
+    0 2.4cqh 4cqh -2cqh rgb(0 0 0 / 0.5);
+  text-align: center;
+  overflow: hidden;
+}
+
+.r2p-side-hero {
+  width: min(100%, 46cqh);
+  max-height: 42cqh;
+  object-fit: contain;
+  filter: drop-shadow(0 2cqh 2cqh rgb(0 0 0 / 0.25));
+}
+
+.r2p-side p {
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.r2p-side-name {
+  font-size: 5cqh;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.r2p-side-offer {
+  padding: 1.2cqh 3cqh;
+  border-radius: 99px;
+  background: var(--r2p-accent);
+  color: var(--r2p-accent-ink);
+  font-size: 4cqh;
+  font-weight: 800;
+  box-shadow: 0 0.8cqh 0 color-mix(in srgb, var(--r2p-accent) 60%, black);
+}
+
+.r2p-side-price {
+  font-size: 4.4cqh;
+  font-weight: 800;
+  color: var(--r2p-primary);
+}
+
+.r2p-side-hint {
+  font-size: 2.8cqh;
+  color: var(--r2p-muted);
+}
+
+.r2p[data-layout="square"] .r2p-side-name {
+  font-size: 4.2cqh;
+}
+
+/* --- Seasonal themes (feature 22): a greeting ribbon on the cards -------------------------- */
+.r2p-card .r2p-occasion {
+  justify-self: center;
+  margin: 0 0 1cqw;
+  padding: 1.2cqw 4cqw;
+  border-radius: 99px;
+  font-size: 3.6cqw;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1f5f5b, #2f8f84);
+  box-shadow: 0 0.8cqw 0 rgb(0 0 0 / 0.18);
+}
+
+.r2p-occasion[data-theme="eid"] {
+  background: linear-gradient(135deg, #7a3e8e, #c08a2e);
+}
+
+.r2p-occasion[data-theme="independence_day"] {
+  background: linear-gradient(135deg, #01411c, #0f6b35);
+}
+
+.r2p-occasion[data-theme="wedding_season"] {
+  background: linear-gradient(135deg, #c2410c, #f59e0b);
+}
+
+.r2p-occasion[data-theme="winter_sale"] {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+}
+
+/* --- Accessibility (feature 23): sounds as words, for muted phones and deaf players ---- */
+.r2p-hud .r2p-cc {
+  font-size: 3.2cqw;
+  letter-spacing: 0.02em;
+}
+
+.r2p-cc[aria-pressed="false"] {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+
+.r2p-caption {
+  position: absolute;
+  inset: auto 0 4cqh;
+  justify-self: center;
+  width: max-content;
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 1.2cqw 3.6cqw;
+  border-radius: 99px;
+  background: rgb(20 22 30 / 0.78);
+  color: #ffffff;
+  font-size: 4cqw;
+  font-weight: 700;
+  text-align: center;
+  pointer-events: none;
+}
+
+.r2p-caption[hidden] {
+  display: none;
+}
+
+/* --- Score challenge (feature 42): play again and challenge a friend, side by side --------- */
+.r2p-row {
+  display: flex;
+  gap: 2.6cqw;
+  width: 100%;
+}
+
+.r2p-row > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.r2p-row > [hidden] {
+  display: none;
+}
+
+.r2p-card .r2p-challenge {
+  padding: 1.6cqw 3.6cqw;
+  border-radius: 3cqw;
+  background: color-mix(in srgb, var(--r2p-accent) 18%, var(--r2p-surface));
+  color: var(--r2p-ink);
+  font-weight: 700;
+  font-size: 3.8cqw;
+}
+
+/* --- Offers on WhatsApp (feature 43): a quiet link, the player's own choice --------------- */
+.r2p-card .r2p-optin {
+  font-size: 3.4cqw;
+  font-weight: 700;
+  color: var(--r2p-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.8cqw;
+}

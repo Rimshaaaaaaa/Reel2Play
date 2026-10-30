@@ -1,0 +1,160 @@
+.import {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+}
+
+.import-intro {
+  display: grid;
+  gap: 10px;
+}
+
+.import-intro p {
+  color: var(--muted);
+  font-size: var(--step-1);
+  line-height: 1.45;
+}
+
+.import-signin,
+.import-empty {
+  display: grid;
+  gap: 12px;
+  max-width: 660px;
+}
+
+.import-signin .btn {
+  justify-self: start;
+}
+
+/* Posts read like a phone's grid of Reels: tall thumbnails on raised cards. */
+.posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(150px, 42vw), 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.posts .post {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 0;
+  overflow: hidden;
+  transition:
+    transform 120ms ease-out,
+    border-color 120ms;
+}
+
+.posts .post[data-chosen] {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 var(--highlight),
+    0 5px 0 var(--accent-edge),
+    0 22px 30px -20px var(--shadow);
+}
+
+.post-thumb {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  max-height: 300px;
+  width: 100%;
+  background:
+    linear-gradient(160deg, var(--surface-2), color-mix(in oklch, var(--edge) 60%, var(--surface-2)));
+}
+
+.post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.post[data-locked] .post-thumb img {
+  filter: grayscale(0.9) contrast(0.85);
+  opacity: 0.7;
+}
+
+.post-source {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--surface) 88%, transparent);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 0 var(--edge);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.post-source::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: oklch(0.6 0.2 350);
+}
+
+.post-source[data-source="facebook"]::before {
+  background: oklch(0.55 0.17 262);
+}
+
+.post-copy {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 12px 14px 14px;
+}
+
+.post-account {
+  display: grid;
+  gap: 1px;
+  font-weight: 700;
+  font-size: var(--step--1);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.post-account time {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.post-caption {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.post-copy .btn {
+  min-height: 40px;
+  padding: 9px 14px;
+  font-size: var(--step--1);
+}
+
+.post-locked {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px dashed var(--edge);
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.import-form {
+  container-type: inline-size;
+  scroll-margin-top: 88px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .posts .post[data-chosen] {
+    transform: none;
+  }
+}

@@ -1,0 +1,111 @@
+.ad-progress {
+  display: grid;
+  gap: 18px;
+  max-width: 660px;
+}
+
+.ad-progress h2 {
+  margin-bottom: 14px;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.timeline li {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.timeline .actor {
+  justify-self: start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-size: var(--step--1);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.timeline li.running .actor {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* The one animated element on the page: the step that is working right now. */
+.timeline li.running .message::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.25;
+    transform: scale(0.7);
+  }
+}
+
+.ad-error {
+  margin-top: 12px;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.brief dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.brief dl > div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+}
+
+.brief dt {
+  color: var(--muted);
+}
+
+.brief dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.brief small {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.swatches {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.note {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+@container (max-width: 420px) {
+  .timeline li,
+  .brief dl > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

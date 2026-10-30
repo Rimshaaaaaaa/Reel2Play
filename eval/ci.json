@@ -1,0 +1,41 @@
+{
+  "_note": "The CI evaluation: synthetic videos (drawn shapes, see samples/) on the mock model's recorded answers. It checks that the harness and its numbers work; it says nothing about real shops.",
+  "name": "CI (synthetic, mock model)",
+  "videos": [
+    {
+      "id": "ci-sneaker",
+      "category": "shoes",
+      "file": "../samples/synthetic-sneaker.mp4",
+      "shop_name": "Synthetic Shoes",
+      "language": "en",
+      "price": "Rs 3,200",
+      "offer": "20% off this week",
+      "consent": "Synthetic video made by Reel2Play",
+      "synthetic": true,
+      "mock_key": "default"
+    },
+    {
+      "id": "ci-cake",
+      "category": "bakery_food",
+      "file": "../samples/synthetic-cake.mp4",
+      "shop_name": "Synthetic Bakes",
+      "language": "en",
+      "price": "Rs 1,800",
+      "consent": "Synthetic video made by Reel2Play",
+      "synthetic": true,
+      "mock_key": "cake"
+    },
+    {
+      "id": "ci-fix-loop",
+      "category": "shoes",
+      "file": "../samples/synthetic-sneaker.mp4",
+      "shop_name": "Synthetic Shoes",
+      "language": "en",
+      "price": "Rs 3,200",
+      "offer": "20% off this week",
+      "consent": "Synthetic video made by Reel2Play",
+      "synthetic": true,
+      "mock_key": "always_fails"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "runner",
+  "name": "Runner",
+  "plan": "Build",
+  "description": "A small courier runs across a track in the shop's colours. The player taps to jump over crates and grab coupons; the product waits on a podium at the finish line.",
+  "control": "Tap to jump",
+  "product_role": "The prize at the finish line",
+  "ends_when": "The courier reaches the finish line, about 20 to 25 seconds",
+  "good_for": ["shoes", "clothing", "phone_accessories"],
+  "uses_photo": false,
+  "params": {
+    "speed": {"easy": 190, "normal": 220, "hard": 250, "min": 160, "max": 290},
+    "track_seconds": {"easy": 21, "normal": 22, "hard": 23, "min": 18, "max": 25},
+    "obstacles": {"easy": 6, "normal": 8, "hard": 10, "min": 4, "max": 12},
+    "coupons": {"easy": 6, "normal": 6, "hard": 7, "min": 3, "max": 9},
+    "knockback": {"easy": 150, "normal": 180, "hard": 210, "min": 100, "max": 240}
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "spots",
+  "name": "Tap to reveal",
+  "plan": "Stretch",
+  "description": "The product stands on a turntable while glowing spots light up on it one after another. The player taps each spot before it fades to learn something about the product.",
+  "control": "Tap",
+  "product_role": "The whole screen",
+  "ends_when": "All spots have lit up, or too many were missed",
+  "good_for": [
+    "phone_accessories",
+    "home_decor",
+    "shoes"
+  ],
+  "uses_photo": false,
+  "needs": [
+    "facts"
+  ],
+  "params": {
+    "spots": {
+      "easy": 5,
+      "normal": 6,
+      "hard": 6,
+      "min": 4,
+      "max": 7
+    },
+    "spot_every": {
+      "easy": 3.0,
+      "normal": 2.7,
+      "hard": 2.4,
+      "min": 2.0,
+      "max": 3.5
+    },
+    "spot_life": {
+      "easy": 3.6,
+      "normal": 3.0,
+      "hard": 2.4,
+      "min": 2.0,
+      "max": 4.0
+    },
+    "allowed_misses": {
+      "easy": 2,
+      "normal": 1,
+      "hard": 1,
+      "min": 0,
+      "max": 2
+    }
+  },
+  "tester_pace_seconds": 0.5
+}

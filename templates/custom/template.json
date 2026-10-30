@@ -1,0 +1,39 @@
+{
+  "id": "custom",
+  "name": "New mechanic",
+  "plan": "Later",
+  "description": "A mechanic the director invents for this product, written as a small checked script. Used only when the owner asks for an experimental game; it is play-tested like every template.",
+  "control": "Tap or drag, as the mechanic says",
+  "product_role": "Whatever the mechanic makes of it",
+  "ends_when": "The goal, or the time limit",
+  "good_for": [
+    "clothing",
+    "bakery_food",
+    "shoes",
+    "cosmetics",
+    "phone_accessories",
+    "home_decor",
+    "other"
+  ],
+  "uses_photo": false,
+  "needs": [
+    "mechanic"
+  ],
+  "params": {
+    "goal": {
+      "easy": 9,
+      "normal": 10,
+      "hard": 12,
+      "min": 6,
+      "max": 14
+    },
+    "time_limit": {
+      "easy": 27,
+      "normal": 26,
+      "hard": 25,
+      "min": 20,
+      "max": 28
+    }
+  },
+  "tester_pace_seconds": 0.3
+}

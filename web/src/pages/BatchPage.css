@@ -1,0 +1,282 @@
+.batch {
+  display: grid;
+  gap: 22px;
+  max-width: 760px;
+}
+
+.batch-head {
+  display: grid;
+  gap: 10px;
+}
+
+.batch-lede {
+  color: var(--muted);
+  font-size: var(--step-1);
+  line-height: 1.45;
+  max-width: 62ch;
+}
+
+.batch-alt {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+/* The file picker is a wide, raised key; the real input covers it for every pointer. */
+.tray-add {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+}
+
+.tray-add input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tray-add-face {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 12px 20px;
+  border: 1px dashed color-mix(in oklch, var(--accent) 55%, var(--line));
+  border-radius: var(--radius-control);
+  background: color-mix(in oklch, var(--accent-soft) 55%, var(--surface));
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: 0 3px 0 var(--edge);
+}
+
+.tray-add:focus-within .tray-add-face {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.tray-add small {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.trays {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+/* Each product sits on a tray: a raised card with its number, picture and own details. */
+.tray {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 72px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: 0 3px 0 var(--edge), 0 10px 18px -14px var(--shadow);
+}
+
+.tray-number {
+  display: grid;
+  place-items: center;
+  inline-size: 30px;
+  block-size: 30px;
+  border-radius: 9px;
+  background: var(--surface-2);
+  font: 700 var(--step--1) / 1 var(--font-display);
+  box-shadow: inset 0 -2px 0 var(--edge);
+}
+
+.tray-thumb {
+  inline-size: 72px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.tray-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+}
+
+.tray-fields label {
+  display: grid;
+  gap: 4px;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.tray-fields input {
+  min-inline-size: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--step-0);
+}
+
+.tray-fields input:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.tray-offer {
+  grid-column: 1 / -1;
+}
+
+.tray-remove {
+  inline-size: 34px;
+  block-size: 34px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 0 var(--edge);
+}
+
+.tray-remove:hover {
+  color: var(--danger);
+}
+
+.tray-remove:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+@media (max-width: 560px) {
+  .tray {
+    grid-template-columns: auto 56px minmax(0, 1fr);
+  }
+
+  .tray-thumb {
+    inline-size: 56px;
+  }
+
+  .tray-fields {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr;
+  }
+
+  .tray-remove {
+    position: absolute;
+    inset-block-start: 12px;
+    inset-inline-end: 12px;
+  }
+}
+
+/* --- the set, while it is made ------------------------------------------------------------ */
+.set-progress {
+  block-size: 12px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  box-shadow: inset 0 2px 2px oklch(0 0 0 / 0.1);
+  overflow: hidden;
+}
+
+.set-progress span {
+  display: block;
+  block-size: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, color-mix(in oklch, var(--accent) 65%, white), var(--accent));
+  transition: inline-size 400ms ease-out;
+}
+
+.set-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+  gap: 14px;
+}
+
+.set-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: 0 4px 0 var(--edge), 0 14px 22px -16px var(--shadow);
+}
+
+.set-picture {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  background:
+    radial-gradient(circle at 30% 25%, var(--surface), transparent 60%),
+    var(--surface-2);
+  border-block-end: 1px solid var(--line);
+}
+
+.set-picture img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.set-number {
+  display: grid;
+  place-items: center;
+  inline-size: 64px;
+  block-size: 64px;
+  border-radius: 18px;
+  background: var(--surface);
+  font: 700 var(--step-2) / 1 var(--font-display);
+  color: var(--muted);
+  box-shadow: inset 0 -4px 0 var(--edge), 0 6px 12px -8px var(--shadow);
+}
+
+.set-copy {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 14px;
+}
+
+.set-name {
+  font: 700 var(--step-1) / 1.2 var(--font-display);
+}
+
+.set-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.set-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 4px;
+}
+
+.set-actions .btn {
+  min-height: 40px;
+  padding: 9px 14px;
+  font-size: var(--step--1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .set-progress span {
+    transition: none;
+  }
+}

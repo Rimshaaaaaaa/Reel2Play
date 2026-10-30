@@ -1,0 +1,158 @@
+.studio {
+  display: grid;
+  gap: 24px;
+}
+
+.studio-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.studio-head h1 {
+  margin-inline-end: auto;
+}
+
+.studio-empty {
+  max-width: 60ch;
+  display: grid;
+  gap: 12px;
+}
+
+/* The totals read as a row of keys on a till: raised tiles, figures first. */
+.totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.totals > div {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 3px 0 var(--edge);
+}
+
+.totals dt {
+  color: var(--muted);
+  font-size: var(--step--1);
+  order: 2;
+}
+
+.totals dd {
+  margin: 0;
+  font: 700 var(--step-2) / 1 var(--font-display);
+}
+
+.kit {
+  display: grid;
+  gap: 10px;
+  max-width: 660px;
+}
+
+.kit-note {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.ad-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.ad-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.ad-row img,
+.ad-row .no-preview {
+  inline-size: 64px;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.ad-row-copy {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.ad-row-title {
+  font: 700 var(--step-1) / 1.2 var(--font-display);
+  color: var(--ink);
+}
+
+.ad-row-stats,
+.ad-row-sources {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+@media (max-width: 560px) {
+  .ad-row {
+    grid-template-columns: 56px 1fr;
+  }
+
+  .ad-row .btn {
+    grid-column: 1 / -1;
+  }
+}
+
+/* --- What works (feature 53): game types as raised rows, the best one lifted -------------- */
+.memory {
+  display: grid;
+  gap: 10px;
+  max-width: 660px;
+}
+
+.memory-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.memory-list li {
+  display: grid;
+  gap: 2px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: 0 2px 0 var(--edge);
+}
+
+.memory-list li[data-best] {
+  border-color: var(--accent);
+  box-shadow: 0 3px 0 var(--accent-edge);
+}
+
+.memory-list li[data-best] strong::after {
+  content: "Best so far";
+  margin-inline-start: 10px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: var(--accent-soft);
+  color: var(--accent-edge);
+  font: 600 var(--step--1) / 1.4 var(--font-body);
+}
+
+.memory-list span {
+  color: var(--muted);
+  font-size: var(--step--1);
+}

@@ -1,0 +1,37 @@
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Node
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+test-results/
+playwright-report/
+blob-report/
+
+# Runtime data (uploads, builds, recordings)
+var/
+*.log
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+
+# Evaluation videos are shops' own footage: kept locally, never in the repo or the ZIP.
+eval/videos/

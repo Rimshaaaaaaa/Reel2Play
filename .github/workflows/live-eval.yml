@@ -1,0 +1,78 @@
+name: Live model evaluation
+
+# Runs by hand only (Actions tab → "Live model evaluation" → Run workflow), after the
+# model keys are added as repository secrets. It never runs on pushes.
+on:
+  workflow_dispatch:
+
+jobs:
+  model-check:
+    name: Model check (Baseten, Fireworks, Modal)
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: api
+    env:
+      AI_MODE: live
+      BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+      FIREWORKS_API_KEY: ${{ secrets.FIREWORKS_API_KEY }}
+      GLIMMER_BASE_URL: ${{ secrets.GLIMMER_BASE_URL }}
+      GLIMMER_API_KEY: ${{ secrets.GLIMMER_API_KEY }}
+      SAM_URL: ${{ secrets.SAM_URL }}
+      MODAL_PROXY_TOKEN: ${{ secrets.MODAL_PROXY_TOKEN }}
+      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - name: Which endpoint answers for each role
+        run: uv run reel2play model-check
+
+  synthetic-run:
+    name: Pipeline on the synthetic samples, real models
+    needs: [model-check]
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    defaults:
+      run:
+        working-directory: api
+    env:
+      AI_MODE: live
+      DATABASE_URL: postgresql+psycopg://postgres@127.0.0.1:5432/reel2play_eval
+      WORKER_ENABLED: "false"
+      BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+      FIREWORKS_API_KEY: ${{ secrets.FIREWORKS_API_KEY }}
+      GLIMMER_BASE_URL: ${{ secrets.GLIMMER_BASE_URL }}
+      GLIMMER_API_KEY: ${{ secrets.GLIMMER_API_KEY }}
+      SAM_URL: ${{ secrets.SAM_URL }}
+      MODAL_PROXY_TOKEN: ${{ secrets.MODAL_PROXY_TOKEN }}
+      MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+      MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci && npm run build
+        working-directory: engine
+      - run: uv sync --frozen && uv run playwright install --with-deps chromium
+      - run: psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE reel2play_eval;"
+      - run: uv run alembic upgrade head
+      - name: The two synthetic samples through every agent
+        run: uv run reel2play eval run ../eval/ci.json --limit 2 --out ../eval-results
+      - uses: actions/upload-artifact@v4
+        with:
+          name: live-synthetic-report
+          path: eval-results

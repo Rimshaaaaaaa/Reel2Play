@@ -1,0 +1,79 @@
+// Bubble pop: an example of a mechanic the director might write (synthetic, written for
+// tests and the offline demo). Bubbles rise from the bottom; most carry the product, some
+// are empty (every fifth, so a round takes about the same time on every seed). Tap the
+// product bubbles before they float away.
+const RISE = 120;
+const SIZE = 70;
+
+function setup(api) {
+  return { bubbles: [], wait: 0.3, popped: [], count: 0 };
+}
+
+function update(state, api, dt) {
+  state.wait -= dt;
+  if (state.wait <= 0) {
+    state.wait = 1.5 + api.rng() * 0.1;
+    state.count += 1;
+    const empty = state.count % 5 === 0;
+    state.bubbles.push({ x: 60 + api.rng() * 240, y: api.H + 40, empty: empty, wobble: api.rng() * 6 });
+  }
+  for (let i = 0; i < state.bubbles.length; i++) {
+    state.bubbles[i].y -= RISE * dt;
+  }
+  state.bubbles = state.bubbles.filter(function (b) { return b.y > 90; });
+  for (let i = 0; i < state.popped.length; i++) {
+    state.popped[i].age += dt;
+  }
+  state.popped = state.popped.filter(function (p) { return p.age < 0.4; });
+}
+
+function draw(state, api) {
+  for (let i = 0; i < state.bubbles.length; i++) {
+    const b = state.bubbles[i];
+    const x = b.x + Math.sin(api.time * 2 + b.wobble) * 8;
+    api.circle(x, b.y, SIZE / 2 + 6, "surface");
+    api.ring(x, b.y, SIZE / 2 + 6, b.empty ? "muted" : "accent", 4);
+    if (!b.empty) {
+      api.product(x, b.y, SIZE * 0.8);
+    }
+  }
+  for (let i = 0; i < state.popped.length; i++) {
+    const p = state.popped[i];
+    api.ring(p.x, p.y, SIZE / 2 + 6 + p.age * 60, "accent", 3);
+  }
+}
+
+function tap(state, api, x, y) {
+  for (let i = state.bubbles.length - 1; i >= 0; i--) {
+    const b = state.bubbles[i];
+    const bx = b.x + Math.sin(api.time * 2 + b.wobble) * 8;
+    const dx = x - bx;
+    const dy = y - b.y;
+    if (dx * dx + dy * dy < (SIZE / 2 + 12) * (SIZE / 2 + 12)) {
+      state.bubbles.splice(i, 1);
+      state.popped.push({ x: bx, y: b.y, age: 0 });
+      if (b.empty) {
+        api.sound("miss");
+      } else {
+        api.addScore(1);
+        api.burst(bx, b.y);
+        api.sound("catch");
+      }
+      return;
+    }
+  }
+}
+
+function hint(state, api) {
+  let best = null;
+  for (let i = 0; i < state.bubbles.length; i++) {
+    const b = state.bubbles[i];
+    if (!b.empty && b.y < api.H - 80 && (best === null || b.y < best.y)) {
+      best = b;
+    }
+  }
+  if (best === null) {
+    return null;
+  }
+  return [best.x + Math.sin(api.time * 2 + best.wobble) * 8, best.y];
+}

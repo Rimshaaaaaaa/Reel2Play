@@ -1,0 +1,46 @@
+{
+  "id": "scratch",
+  "name": "Scratch card",
+  "plan": "Stretch",
+  "description": "A gift card covered in thick silver foil. The player rubs the foil off to reveal the product and the shop's offer underneath; each spot needs a few passes.",
+  "control": "Swipe, or tap spot by spot",
+  "product_role": "Under the scratch layer",
+  "ends_when": "Most of the card is clear, or the time limit",
+  "good_for": [
+    "cosmetics",
+    "phone_accessories",
+    "other"
+  ],
+  "uses_photo": false,
+  "params": {
+    "layers": {
+      "easy": 3,
+      "normal": 3,
+      "hard": 3,
+      "min": 2,
+      "max": 4
+    },
+    "brush": {
+      "easy": 20,
+      "normal": 17,
+      "hard": 16,
+      "min": 14,
+      "max": 24
+    },
+    "reveal_share": {
+      "easy": 0.7,
+      "normal": 0.78,
+      "hard": 0.82,
+      "min": 0.6,
+      "max": 0.9
+    },
+    "time_limit": {
+      "easy": 30,
+      "normal": 30,
+      "hard": 29,
+      "min": 22,
+      "max": 30
+    }
+  },
+  "tester_pace_seconds": 0.7
+}

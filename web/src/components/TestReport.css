@@ -1,0 +1,144 @@
+.test-report {
+  display: grid;
+  gap: 16px;
+  max-width: 660px;
+  --result: var(--accent);
+  --result-soft: var(--accent-soft);
+}
+
+.test-report.is-failed {
+  --result: var(--danger);
+  --result-soft: color-mix(in oklch, var(--danger) 14%, var(--surface));
+}
+
+.test-report h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* A small raised seal in the result colour, the report's one bold mark. */
+.test-report h2::before {
+  content: "";
+  inline-size: 14px;
+  block-size: 14px;
+  border-radius: 50%;
+  background: var(--result);
+  box-shadow:
+    0 2px 0 color-mix(in oklch, var(--result) 60%, black),
+    inset 0 1px 0 oklch(1 0 0 / 0.45);
+}
+
+.report-summary {
+  line-height: 1.5;
+}
+
+.checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 6px 14px;
+}
+
+.checks li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 2px 8px;
+  align-items: start;
+  padding: 6px 0;
+}
+
+.checks .mark {
+  inline-size: 20px;
+  block-size: 20px;
+  border-radius: 6px;
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.checks li.ok .mark {
+  stroke: var(--accent);
+  background: var(--accent-soft);
+}
+
+.checks li.bad {
+  grid-column: 1 / -1;
+}
+
+.checks li.bad .mark {
+  stroke: var(--on-accent);
+  background: var(--danger);
+}
+
+.check-label {
+  font-weight: 600;
+}
+
+.check-detail {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.report-shot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  inline-size: fit-content;
+}
+
+.report-shot img {
+  inline-size: 54px;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  box-shadow: 0 3px 0 var(--edge);
+}
+
+.report-shot:hover {
+  border-color: var(--edge);
+}
+
+.report-next {
+  padding: 12px 14px;
+  border-radius: var(--radius-control);
+  background: var(--result-soft);
+  font-weight: 600;
+}
+
+.test-report:lang(ur) h2,
+.test-report:lang(ur) .report-summary,
+.test-report:lang(ur) .check-label,
+.test-report:lang(ur) .report-next,
+.test-report:lang(ur) .report-warnings,
+.test-report:lang(ur) .report-shot span {
+  font-family: var(--font-urdu);
+  line-height: 2;
+}
+
+/* Things the shop should look at: an amber edge, not an error. */
+.report-warnings {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: var(--radius-control);
+  border-inline-start: 4px solid var(--sign);
+  background: color-mix(in oklch, var(--sign) 12%, var(--surface));
+}
+
+.report-warnings ul {
+  margin: 0;
+  padding-inline-start: 18px;
+}

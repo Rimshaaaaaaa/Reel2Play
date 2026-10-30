@@ -1,0 +1,47 @@
+{
+  "id": "memory",
+  "name": "Memory match",
+  "plan": "Stretch",
+  "description": "Cards lie face down. The player flips two at a time to find pairs: the shop's products, or the product in the shop's colours. Every card shows for a moment at the start.",
+  "control": "Tap cards",
+  "product_role": "The cards",
+  "ends_when": "All pairs found, or the time limit",
+  "good_for": [
+    "clothing",
+    "cosmetics",
+    "home_decor"
+  ],
+  "uses_photo": false,
+  "uses_more_products": true,
+  "params": {
+    "pairs": {
+      "easy": 5,
+      "normal": 6,
+      "hard": 6,
+      "min": 4,
+      "max": 6
+    },
+    "peek_seconds": {
+      "easy": 3.0,
+      "normal": 2.5,
+      "hard": 2.2,
+      "min": 1.5,
+      "max": 3.5
+    },
+    "flip_back": {
+      "easy": 1.2,
+      "normal": 1.1,
+      "hard": 1.0,
+      "min": 0.7,
+      "max": 1.4
+    },
+    "time_limit": {
+      "easy": 30,
+      "normal": 29,
+      "hard": 27,
+      "min": 22,
+      "max": 30
+    }
+  },
+  "tester_pace_seconds": 0.7
+}

@@ -1,0 +1,23 @@
+{
+  "name": "reel2play-engine",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The small canvas engine every Reel2Play game template shares.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint src tests && cd ../templates && oxlint .",
+    "test": "vitest run",
+    "e2e": "npm run build && playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^26.6.5",
+    "esbuild": "^0.28.2",
+    "jsdom": "^30.1.3",
+    "oxlint": "^1.90.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

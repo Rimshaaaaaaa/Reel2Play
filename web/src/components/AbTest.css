@@ -1,0 +1,129 @@
+.ab {
+  display: grid;
+  gap: 14px;
+}
+
+.ab > p {
+  color: var(--muted);
+}
+
+.ab > .btn {
+  justify-self: start;
+}
+
+.ab-note {
+  font-size: var(--step--1);
+}
+
+.ab-versions {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each version is a raised row; the one ahead lifts a little and takes the accent edge. */
+.ab-version {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: 0 3px 0 var(--edge);
+}
+
+.ab-version[data-leading] {
+  border-color: var(--accent);
+  box-shadow: 0 4px 0 var(--accent-edge);
+  transform: translateY(-2px);
+}
+
+.ab-letter {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  font: 800 var(--step-1) / 1 var(--font-display);
+  box-shadow: inset 0 -3px 0 var(--edge);
+}
+
+.ab-version[data-leading] .ab-letter {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: inset 0 -3px 0 var(--accent-edge);
+}
+
+.ab-what {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  min-width: 0;
+}
+
+.ab-name {
+  font-weight: 700;
+}
+
+.ab-template {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.ab-numbers {
+  display: flex;
+  gap: 14px;
+  margin: 0;
+}
+
+.ab-numbers div {
+  display: grid;
+  text-align: center;
+}
+
+.ab-numbers dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.ab-numbers dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ab-open {
+  font-weight: 600;
+}
+
+.ab-verdict {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ab-link {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 560px) {
+  .ab-version {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .ab-numbers {
+    grid-column: 1 / -1;
+    justify-content: space-around;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-version[data-leading] {
+    transform: none;
+  }
+}

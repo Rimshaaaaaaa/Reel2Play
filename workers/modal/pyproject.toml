@@ -1,0 +1,33 @@
+[project]
+name = "reel2play-workers"
+version = "0.1.0"
+description = "Reel2Play's Modal apps: SAM 3.1 cut-out, Muse Glimmer server, play-test Sandboxes."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "modal>=1.2",
+    "numpy>=2.1",
+    "pillow>=11.0",
+    "pydantic>=2.9",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.3", "ruff>=0.8", "mypy>=1.13"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "N", "PT", "RET", "C4"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["sam_core.py"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

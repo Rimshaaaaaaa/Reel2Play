@@ -1,0 +1,87 @@
+# Render blueprint: the API as one free Docker web service, the web app as a free static site.
+# Secrets are marked sync: false, so Render asks for them in the dashboard; none live here.
+services:
+  - type: web
+    name: reel2play-api
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: STORAGE_BACKEND
+        value: supabase
+      - key: MEDIA_FOR_MODELS
+        value: signed_url
+      - key: AI_MODE
+        value: live
+      - key: WORKER_ENABLED
+        value: "true"
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CRON_SECRET
+        sync: false
+      - key: WEB_BASE_URL
+        sync: false
+      - key: API_BASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: BASETEN_API_KEY
+        sync: false
+      - key: FIREWORKS_API_KEY
+        sync: false
+      - key: GLIMMER_BASE_URL
+        sync: false
+      - key: GLIMMER_API_KEY
+        sync: false
+      - key: SAM_URL
+        sync: false
+      - key: SAM_TRACK_URL
+        sync: false
+      - key: MODAL_PROXY_TOKEN
+        sync: false
+      - key: MODAL_TOKEN_ID
+        sync: false
+      - key: MODAL_TOKEN_SECRET
+        sync: false
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_APP_SECRET
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        sync: false
+      - key: WHATSAPP_BUSINESS_NUMBER
+        sync: false
+      - key: ADMIN_KEY
+        sync: false
+      - key: META_APP_ID
+        sync: false
+      - key: META_APP_SECRET
+        sync: false
+      - key: META_LOGIN_CONFIG_ID
+        sync: false
+
+  - type: web
+    name: reel2play-web
+    runtime: static
+    rootDir: web
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false

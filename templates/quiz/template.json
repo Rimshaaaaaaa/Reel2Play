@@ -1,0 +1,42 @@
+{
+  "id": "quiz",
+  "name": "Quiz",
+  "plan": "Stretch",
+  "description": "Three quick questions about the product, answered from the shop's own video. Each shows the product, then three answer tiles to tap before the bar runs out.",
+  "control": "Tap an answer",
+  "product_role": "Pictured in each question",
+  "ends_when": "The last answer",
+  "good_for": [
+    "bakery_food",
+    "cosmetics",
+    "clothing"
+  ],
+  "uses_photo": false,
+  "needs": [
+    "quiz"
+  ],
+  "params": {
+    "read_seconds": {
+      "easy": 2.2,
+      "normal": 2.0,
+      "hard": 1.6,
+      "min": 1.2,
+      "max": 3.0
+    },
+    "answer_seconds": {
+      "easy": 9,
+      "normal": 7,
+      "hard": 6,
+      "min": 4,
+      "max": 10
+    },
+    "reveal_seconds": {
+      "easy": 2.6,
+      "normal": 2.4,
+      "hard": 2.2,
+      "min": 1.6,
+      "max": 3.0
+    }
+  },
+  "tester_pace_seconds": 1.0
+}

@@ -1,0 +1,69 @@
+.product-preview {
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+}
+
+/* The strip holds the frames side by side; stepping its position plays them, back and forth. */
+.sprite-moving {
+  width: min(80%, 260px);
+  aspect-ratio: 1;
+  background-repeat: no-repeat;
+  background-size: calc(var(--frames) * 100%) 100%;
+  animation: sprite-play calc(var(--frames) * 150ms) steps(var(--frames), jump-none) infinite
+    alternate;
+  filter: drop-shadow(0 14px 18px oklch(0 0 0 / 0.35));
+}
+
+.product-others {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-others li {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  background: oklch(1 0 0 / 0.08);
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.12),
+    0 3px 0 oklch(0 0 0 / 0.35);
+}
+
+.phone-screen .product-preview img.sprite {
+  width: min(80%, 260px);
+  height: auto;
+  max-height: 60%;
+  padding: 0;
+}
+
+.phone-screen .product-others img {
+  width: auto;
+  height: auto;
+  max-width: 52px;
+  max-height: 52px;
+  object-fit: contain;
+}
+
+@keyframes sprite-play {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sprite-moving {
+    animation: none;
+  }
+}

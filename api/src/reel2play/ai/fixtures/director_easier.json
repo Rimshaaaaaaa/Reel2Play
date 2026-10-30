@@ -1,0 +1,16 @@
+{
+  "_note": "Recorded answers for the mock provider. Synthetic: written for tests and offline runs, not real model output.",
+  "default": {
+    "text": {
+      "difficulty": "easy",
+      "difficulty_overrides": {
+        "goal": 9,
+        "fall_speed": 180,
+        "spawn_every": 1.45,
+        "decoy_share": 0.12,
+        "time_limit": 26
+      },
+      "reason": "Most players run out of time before the goal, so the goal is smaller and things fall more slowly."
+    }
+  }
+}

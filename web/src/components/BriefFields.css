@@ -1,0 +1,127 @@
+/* The brief form: shared by the upload and the Instagram or Facebook import. */
+
+.brief-form {
+  display: grid;
+  gap: 18px;
+  max-width: 660px;
+}
+
+.brief-form > .btn {
+  justify-self: start;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.field > span,
+.field > legend {
+  font-weight: 600;
+}
+
+.field small {
+  color: var(--muted);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+/* Inputs sit slightly into the card: an inset edge instead of a raised one. */
+.field input:not([type="radio"], [type="checkbox"]) {
+  font: inherit;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
+  color: var(--ink);
+  min-width: 0;
+  box-shadow: inset 0 2px 0 oklch(0 0 0 / 0.04);
+}
+
+.field input::placeholder {
+  color: color-mix(in oklch, var(--muted) 70%, transparent);
+}
+
+.field input:focus-visible {
+  border-color: var(--focus);
+  background: var(--surface);
+}
+
+.field input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  box-shadow: 0 2px 0 var(--edge);
+  cursor: pointer;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 15px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 2px 0 var(--edge);
+  cursor: pointer;
+}
+
+.choice input {
+  accent-color: var(--accent);
+}
+
+.choice:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 2px 0 var(--accent-edge);
+}
+
+.choice:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.consent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 14px 16px;
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
+  border-left: 4px solid var(--sign);
+}
+
+.consent input {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+@container (max-width: 520px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}

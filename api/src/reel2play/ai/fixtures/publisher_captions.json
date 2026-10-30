@@ -1,0 +1,52 @@
+{
+  "_note": "Recorded answers for the mock provider. Synthetic: written for tests and offline runs, not real model output.",
+  "default": {
+    "text": {
+      "instagram": "Can you catch them all? Play our 20-second sneaker game and see your offer at the end.",
+      "facebook": "We made a tiny game for our Canvas sneaker. Catch 10 pairs and unlock 20% off this week.",
+      "whatsapp_status": "Play our sneaker game and get 20% off this week!",
+      "hashtags": [
+        "sneakers",
+        "shoeshop",
+        "playandwin",
+        "canvasshoes"
+      ]
+    }
+  },
+  "made_up_numbers": {
+    "text": {
+      "instagram": "Biggest sale ever: 70% off everything, only Rs 499!",
+      "facebook": "Play now and win Rs 5000.",
+      "whatsapp_status": "70% off today only",
+      "hashtags": [
+        "sale2026",
+        "sneakers"
+      ]
+    }
+  },
+  "cake": {
+    "text": {
+      "instagram": "Catch 10 cakes in our 20-second game and see today's treat at the end.",
+      "facebook": "Our strawberry layer cake now has its own little game. Play it and order with free delivery today.",
+      "whatsapp_status": "Play our cake game: free delivery today!",
+      "hashtags": [
+        "cake",
+        "bakery",
+        "homebaker",
+        "strawberrycake"
+      ]
+    }
+  },
+  "urdu": {
+    "text": {
+      "instagram": "ہماری 20 سیکنڈ کی گیم کھیلیں اور آخر میں اپنی آفر دیکھیں۔",
+      "facebook": "ہمارے کینوس جوتوں کی اپنی گیم! کھیلیں اور اس ہفتے 20٪ رعایت پائیں۔",
+      "whatsapp_status": "گیم کھیلیں اور 20٪ رعایت پائیں!",
+      "hashtags": [
+        "جوتے",
+        "sneakers",
+        "شاپنگ"
+      ]
+    }
+  }
+}

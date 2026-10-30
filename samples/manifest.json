@@ -1,0 +1,75 @@
+{
+  "_note": "Try-it samples. Synthetic ones are drawn shapes made by scripts/make_samples.py and are labelled synthetic on the page. Add real videos only from shops that agreed, with \"synthetic\": false and who agreed in \"source\". mock_key picks the mock model's recorded answers; mock_only samples are hidden when real models run.",
+  "samples": [
+    {
+      "key": "sneaker",
+      "title": "Canvas sneaker",
+      "about": "A shoe shop's Reel. English, catch game.",
+      "file": "synthetic-sneaker.mp4",
+      "mock_key": "default",
+      "shop_name": "Synthetic Shoes",
+      "language": "en",
+      "price": "Rs 3,200",
+      "offer": "20% off this week",
+      "synthetic": true,
+      "mock_only": false,
+      "source": "Drawn with ffmpeg (scripts/make_samples.py)"
+    },
+    {
+      "key": "sneaker-urdu",
+      "title": "جوتے، اردو میں",
+      "about": "The same Reel, with the game and report in Urdu (runner game).",
+      "file": "synthetic-sneaker.mp4",
+      "mock_key": "urdu",
+      "shop_name": "Synthetic Shoes",
+      "language": "ur",
+      "price": "Rs 3,200",
+      "offer": "20% off this week",
+      "synthetic": true,
+      "mock_only": false,
+      "source": "Drawn with ffmpeg (scripts/make_samples.py)"
+    },
+    {
+      "key": "cake",
+      "title": "Strawberry layer cake",
+      "about": "A home bakery's Reel. English, free delivery offer.",
+      "file": "synthetic-cake.mp4",
+      "mock_key": "cake",
+      "shop_name": "Synthetic Bakes",
+      "language": "en",
+      "price": "Rs 1,800",
+      "offer": "",
+      "synthetic": true,
+      "mock_only": false,
+      "source": "Drawn with ffmpeg (scripts/make_samples.py)"
+    },
+    {
+      "key": "fix-loop",
+      "title": "A game that keeps failing",
+      "about": "The critic misreads the price every time: watch three fix rounds, then the hand-off to a person.",
+      "file": "synthetic-sneaker.mp4",
+      "mock_key": "always_fails",
+      "shop_name": "Synthetic Shoes",
+      "language": "en",
+      "price": "Rs 3,200",
+      "offer": "20% off this week",
+      "synthetic": true,
+      "mock_only": true,
+      "source": "Drawn with ffmpeg (scripts/make_samples.py)"
+    },
+    {
+      "key": "blocked",
+      "title": "A product we never advertise",
+      "about": "The director reports beer: the safety check stops before any game is made.",
+      "file": "synthetic-sneaker.mp4",
+      "mock_key": "blocked_words",
+      "shop_name": "Synthetic Shop",
+      "language": "en",
+      "price": "",
+      "offer": "",
+      "synthetic": true,
+      "mock_only": true,
+      "source": "Drawn with ffmpeg (scripts/make_samples.py)"
+    }
+  ]
+}

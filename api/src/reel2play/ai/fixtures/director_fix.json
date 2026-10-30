@@ -1,0 +1,19 @@
+{
+  "_note": "Recorded answers for the mock provider. Synthetic: written for tests and offline runs, not real model output.",
+  "default": {
+    "text": {
+      "template": "catch",
+      "reason": "Shorter texts so nothing is cut off, and an easier pace.",
+      "difficulty": "easy",
+      "title": "Catch it!",
+      "instruction": "Slide the bag to catch the sneakers.",
+      "win_text": "You did it!",
+      "lose_text": "So close!",
+      "cta_label": "Order now",
+      "product_label": "Sneaker",
+      "offer_line": "20% off this week",
+      "primary_color": "#c8243a",
+      "accent_color": "#1c1a36"
+    }
+  }
+}

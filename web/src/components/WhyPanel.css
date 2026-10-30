@@ -1,0 +1,50 @@
+.why {
+  max-width: 660px;
+}
+
+.why summary {
+  cursor: pointer;
+  font: 700 var(--step-1) / 1.2 var(--font-display);
+}
+
+.why-body {
+  display: grid;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.why h3 {
+  font-size: var(--step-0);
+  margin-bottom: 8px;
+}
+
+.trail {
+  padding: 10px 12px;
+  border-radius: var(--radius-control);
+  font-weight: 600;
+}
+
+.trail.ok {
+  background: var(--accent-soft);
+}
+
+.trail.bad {
+  background: color-mix(in oklch, var(--danger) 16%, var(--surface));
+  color: var(--danger);
+}
+
+.why-list {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.why-list li {
+  display: grid;
+  gap: 2px;
+}
+
+.why-list span {
+  color: var(--muted);
+}

@@ -1,0 +1,21 @@
+{
+  "_note": "Recorded answers for the mock provider. Synthetic: written for tests and offline runs, not real model output.",
+  "default": {
+    "text": {
+      "summary": "We played your game three times on a small phone and on a tablet. It loads quickly, it can be won, and it always ends on your offer and your price.",
+      "next_step": "Share the game link with your customers on WhatsApp."
+    }
+  },
+  "always_fails": {
+    "text": {
+      "summary": "We tested your game and tried to fix it three times, but the price still did not show properly on the last screen.",
+      "next_step": "Our team will look at it and send you a fixed game."
+    }
+  },
+  "urdu": {
+    "text": {
+      "summary": "ہم نے آپ کی گیم چھوٹے فون اور ٹیبلٹ پر تین بار کھیلی۔ یہ جلدی کھلتی ہے، جیتی جا سکتی ہے اور آخر میں آپ کی آفر اور قیمت دکھاتی ہے۔",
+      "next_step": "گیم کا لنک واٹس ایپ پر اپنے گاہکوں کو بھیجیں۔"
+    }
+  }
+}

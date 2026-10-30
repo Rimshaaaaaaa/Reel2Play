@@ -1,0 +1,7 @@
+{
+  "_note": "Recorded answers for the mock provider. Synthetic: written for tests, not real model output. With the mock model the scripted strategies play; these turns are used by the agent-loop tests.",
+  "default": [
+    {"text": {"thought": "The bag is at the bottom; move it under the falling item.", "actions": [{"tool": "tap", "args": {"x": 180, "y": 560}}, {"tool": "wait", "args": {"seconds": 0.5}}]}},
+    {"text": {"thought": "Keep following the items.", "actions": [{"tool": "drag", "args": {"x1": 180, "y1": 560, "x2": 120, "y2": 560}}]}}
+  ]
+}

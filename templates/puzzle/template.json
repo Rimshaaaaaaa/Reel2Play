@@ -1,0 +1,32 @@
+{
+  "id": "puzzle",
+  "name": "Puzzle",
+  "plan": "Build",
+  "description": "The product picture is cut into a 3 by 3 grid of raised tiles. The player taps two tiles to swap them until the picture is whole; a hint glows at 15 seconds.",
+  "control": "Tap two tiles",
+  "product_role": "The picture itself",
+  "ends_when": "Solved, or solved for the player at 30 seconds",
+  "good_for": [
+    "clothing",
+    "home_decor",
+    "phone_accessories"
+  ],
+  "uses_photo": true,
+  "params": {
+    "hint_at": {
+      "easy": 10,
+      "normal": 15,
+      "hard": 18,
+      "min": 6,
+      "max": 20
+    },
+    "misplaced": {
+      "easy": 7,
+      "normal": 8,
+      "hard": 9,
+      "min": 4,
+      "max": 9
+    }
+  },
+  "tester_pace_seconds": 1.5
+}

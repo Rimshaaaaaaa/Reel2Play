@@ -1,0 +1,29 @@
+.ad-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(28px, 6vw, 72px);
+  align-items: start;
+}
+
+.ad-main {
+  container-type: inline-size;
+  display: grid;
+  gap: 18px;
+}
+
+.ad-phone {
+  position: sticky;
+  top: 84px;
+}
+
+@media (max-width: 860px) {
+  .ad-page {
+    grid-template-columns: 1fr;
+  }
+
+  .ad-phone {
+    position: static;
+    justify-self: center;
+    order: -1;
+  }
+}
