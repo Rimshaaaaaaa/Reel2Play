@@ -45,3 +45,28 @@ On the mock model (no keys), `uv run reel2play eval run ../eval/ci.json` runs in
 minutes.
 
 Built with Muse Spark Open.
+
+## Before a real evaluation
+
+1. Obtain permission for processing each video. Obtain separate approval before making any
+   resulting game or preview public. See [`CONSENT.md`](CONSENT.md) for a private record
+   checklist; keep completed permission records outside the repository.
+2. Collect exactly five videos for each of the six business kinds listed in the build spec:
+   clothing, bakery/food, shoes, cosmetics, phone accessories, and home decor.
+3. Copy `videos.example.json` to `videos.json`, replace every placeholder, and check that
+   each `file` points to a real local video under the project directory. Do not put private
+   contact information in `consent` or public reports.
+4. Keep original audio muted. Confirm rights to the footage and product assets, and ensure
+   bystander faces are blurred or excluded by the safe fallback before publication.
+5. Run the real evaluation only with the live provider configuration. The CI manifest is
+   synthetic and uses recorded mock answers; its results are a harness check, not evidence
+   of real-shop performance.
+6. Review each generated game and preview with the shop before adding it to the public gallery.
+   `--gallery` adds successfully published ads automatically, so use it only when that
+   publication approval has been obtained for every video in that run. Otherwise run without
+   `--gallery` and curate approved ads later with `reel2play gallery add <ad-id>`.
+7. Refresh the report after real visitors have generated completion and blind-preference data.
+   Until then those visitor measures correctly remain `not yet`.
+
+The full real evaluation target is 30 videos (five per business kind). Do not invent missing
+videos, consent, visitor votes, or performance numbers to fill the report.

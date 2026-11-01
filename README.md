@@ -157,10 +157,11 @@ reachable, these slot in through the same role configuration (`api/src/reel2play
 
 ## Roadmap
 
-All 65 features of the spec are built (`FEATURES.md` has each one, its code and its tests).
-What is left needs the real world: the keys that switch the live models and services on
-(`HANDOFF.md` lists them), the 30 real product videos for the evaluation, and the first
-live runs that confirm the open questions in `PROGRESS.md`.
+The feature register tracks all 65 items and their current status (`FEATURES.md`). The current
+register is 34 `done`, 29 `needs-key`, and 2 `partial`; code presence and mock tests do not
+prove that live providers or third-party services are running. What remains includes the
+credentials and deployments listed in `HANDOFF.md`, the 30 real consented product videos,
+a live evaluation run, and the open questions in `PROGRESS.md`.
 
 ---
 

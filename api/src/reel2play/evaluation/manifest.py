@@ -72,7 +72,17 @@ class EvalManifest(BaseModel):
         return self
 
     def path_of(self, video: EvalVideo) -> Path:
-        return (self.folder / video.file).resolve()
+        """Resolve a manifest media path without allowing it to escape its folder.
+
+        The CI manifest intentionally references ``../samples``; that remains valid because
+        the evaluation folder is ``eval/`` and the samples directory is inside the project.
+        Paths may leave the manifest folder, but never the project root.
+        """
+        resolved = (self.folder / video.file).resolve()
+        project_root = self.folder.resolve().parent
+        if not resolved.is_relative_to(project_root):
+            raise ValueError(f"{video.id}: video path must stay inside the project")
+        return resolved
 
 
 def load_manifest(path: Path) -> EvalManifest:

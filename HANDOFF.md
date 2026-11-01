@@ -13,36 +13,15 @@ list hon.
   sakta hai (agar woh kisi aur entry mein bhi hai). Jawab ka screenshot rakh lein.
 - Ahsaan ya koi aur code likhe to usay bhi list karein (team mein zyada se zyada 4 log).
 
-## 2. Repo banana aur ZIP push karna
+## 2. ZIP-only handoff (current workflow)
 
-1. GitHub par ek **naya public repo** banayein, naam `reel2play`. README, .gitignore ya
-   license **na** add karein (bilkul khaali repo).
-2. ZIP ko unzip karein aur us folder mein jayein:
+Is continuation workflow mein deliverable ZIP hai. **GitHub repo initialize, commit, ya push karna zaroori nahi hai.** Har phase ki nayi ZIP ko alag folder mein extract karein, purani working copy ko overwrite karne se pehle backup rakhein, aur neeche diye gaye Windows runbook ko follow karein:
 
-```bash
-unzip reel2play.zip
-cd reel2play
-git init -b main
-git add -A
-git commit -m "Foundation, director and cut-out"
-git remote add origin https://github.com/<aap-ka-username>/reel2play.git
-git push -u origin main
-```
+- `SUBMISSION/WINDOWS_DEMO_RUNBOOK.md` — Windows PowerShell par local demo start karna.
+- `SUBMISSION/REHEARSAL_LOG.md` — har rehearsal aur recording ka actual evidence note karna.
+- `SUBMISSION/CLAIM_MATRIX.md` — demo mein kaun se claims bol sakte hain aur unke liye kya evidence chahiye.
 
-3. **Har nayi ZIP aane par** (har group ke baad nayi ZIP aayegi), purani files hata kar nayi
-   daalein aur commit karein, taake repo ki history mein event ke dino ka kaam nazar aaye:
-
-```bash
-cd reel2play
-find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-unzip -o ../reel2play.zip -d ..
-git add -A
-git commit -m "<group ka naam, jaise: Director and cut-out>"
-git push
-```
-
-ZIP mein kabhi `.env` ya koi key nahi hoti. Apni `.env` file kabhi commit na karein
-(`.gitignore` usay pehle se rokta hai).
+ZIP mein `.env` ya koi key nahi hoti. Apni local `.env` file ko ZIP ke andar ya kisi public repo mein share na karein. Agar future mein GitHub submission ki requirement confirm ho, tab official portal ki current instructions dekh kar alag se faisla karein.
 
 ## 3. Accounts aur keys (isi tarteeb se)
 

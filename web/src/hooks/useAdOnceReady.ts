@@ -12,6 +12,8 @@ export function useAdOnceReady(video: VideoOut | null): VideoOut | null {
   const navigate = useNavigate();
   const [failed, setFailed] = useState<VideoOut | null>(null);
   useEffect(() => {
+    // A new upload/sample must not inherit the previous video's failure state.
+    setFailed(null);
     if (!video) return;
     let cancelled = false;
     let timer: number | undefined;

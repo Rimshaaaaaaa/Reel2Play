@@ -10,6 +10,22 @@ import "./AdPage.css";
 const POLL_MS = 1500;
 const POLL_WHILE_STREAMING_MS = 5000;
 
+/**
+ * A signed link changes on every fetch (its expiry moves every second). Keep the first link
+ * for the same file so the game inside the iframe is not reloaded, and reset to
+ * "tap to start", on every poll.
+ */
+function useStableSrc(url: string | null | undefined): string | undefined {
+  const [stable, setStable] = useState<string | undefined>(url ?? undefined);
+  if (!url) return undefined;
+  // Same file (ignoring the changing ?exp=&sig= part): keep the first link.
+  if (stable === undefined || stable.split("?")[0] !== url.split("?")[0]) {
+    setStable(url); // a new build: adopt its link
+    return url;
+  }
+  return stable;
+}
+
 /** Keeps one ad fresh: live events when the browser can stream, polling otherwise. */
 function useAd(id: string): { ad: AdOut | null; missing: boolean } {
   const [ad, setAd] = useState<AdOut | null>(null);
@@ -46,6 +62,9 @@ function useAd(id: string): { ad: AdOut | null; missing: boolean } {
 export function AdPage() {
   const { adId = "" } = useParams();
   const { ad, missing } = useAd(adId);
+  // Hooks must run before any early return.
+  const game = useStableSrc(ad?.build_url);
+
   if (missing) {
     return (
       <section>
@@ -56,8 +75,8 @@ export function AdPage() {
       </section>
     );
   }
+
   const sprites = ad?.sprites ?? [];
-  const game = ad?.build_url;
   return (
     <div className="ad-page">
       <section className="ad-main">

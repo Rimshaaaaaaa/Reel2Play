@@ -12,6 +12,13 @@ export function TryPage() {
   const failed = useAdOnceReady(video);
 
   useEffect(() => {
+    if (!failed) return;
+    setError(failed.error ?? "The sample could not be prepared. Try another sample.");
+    setVideo(null);
+    setBusyKey(null);
+  }, [failed]);
+
+  useEffect(() => {
     getSamples()
       .then(setSamples)
       .catch(() => setError("The samples could not be loaded. Check the connection and refresh."));

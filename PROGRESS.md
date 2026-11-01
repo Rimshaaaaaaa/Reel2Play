@@ -311,3 +311,17 @@ Updated after every build group so a new session can carry on from here.
 - Playwright is pinned to 1.63.0 to match the Chromium in `/opt/pw-browsers`.
 - The API's builder tests compile real games, so build the engine first (`make engine`).
 - No git in this workspace by request: hand over with `make zip`.
+
+### Submission preparation (30 October 2026)
+
+- Added `SUBMISSION/` with a timed three-minute demo script, recording plan, submission write-up draft, evidence checklist, and final hand-in checklist.
+- The kit explicitly distinguishes implemented architecture from live-provider verification and real-shop evaluation. It does not add fabricated metrics or mark any feature status as done.
+- Current feature counts remain those recorded in `FEATURES.md`; update them only after implementation or verification evidence exists.
+
+
+### Submission rehearsal preparation (30 October 2026)
+
+- Added a Windows PowerShell runbook for a local mock-mode demo, including dependency checks, safe PostgreSQL inspection, migrations, API/web startup, synthetic rehearsal and recording steps. The runbook explicitly avoids database resets or deletion.
+- Added a blank rehearsal/evidence log and a claim matrix to distinguish repository implementation from provider execution and live evaluation evidence.
+- Updated `HANDOFF.md` to match the current ZIP-only delivery workflow; it no longer instructs this continuation to push commits to GitHub.
+- No app code was changed and no automated tests or live-provider calls were run in this preparation phase.
