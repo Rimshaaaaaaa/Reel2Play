@@ -34,6 +34,7 @@ image = (
     modal.Image.debian_slim(python_version="3.12")
     .uv_pip_install(
         "torch>=2.8",
+        "torchvision",
         "transformers>=5.14",
         "accelerate>=1.0",
         "fastapi[standard]>=0.115",

@@ -92,6 +92,11 @@ class Settings(BaseSettings):
     max_upload_mb: int = 100
     max_video_seconds: int = 180
     max_photos: int = 6
+    # A WhatsApp number typed with one leading 0 (a local number) gets this country code in
+    # place of the 0: 92 = Pakistan, 971 = UAE, 91 = India, 44 = UK. Set it to "none" on a
+    # public deployment, so people must type their own country code. Numbers that start with
+    # + or 00 are already international and are left alone.
+    default_country_code: str = "92"
     # Feature 46: products in one batch upload, one file each
     max_batch_items: int = 12
     # Feature 52: ads an AI assistant may order over MCP per hour, from one address

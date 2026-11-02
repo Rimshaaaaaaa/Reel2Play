@@ -15,6 +15,7 @@ from reel2play.analysis import Occasion
 from reel2play.jobs import enqueue
 from reel2play.media.storage import MediaStorage
 from reel2play.models import CtaKind, Shop, Video, VideoKind, VideoStatus
+from reel2play.settings import get_settings
 
 PREPARE_JOB = "video.prepare"
 
@@ -88,12 +89,30 @@ class Brief(BaseModel):
     @field_validator("whatsapp_number")
     @classmethod
     def _phone(cls, value: str | None) -> str | None:
+        """wa.me links need the international format: country code first, no +, no leading 0.
+
+        +971... and 00971... are already international. A number with a single leading 0 is a
+        local number, so that 0 is swapped for the default country code (DEFAULT_COUNTRY_CODE),
+        unless that setting is "none", in which case the number is rejected.
+        Digits with no prefix are taken as already international.
+        """
         if value is None or not value.strip():
             return None
-        digits = re.sub(r"[\s\-()]", "", value)
-        if not _PHONE.match(digits):
+        raw = re.sub(r"[\s\-()]", "", value)
+        if not _PHONE.match(raw):
             raise ValueError("WhatsApp number must have 10 to 15 digits, like 923001234567")
-        return digits.lstrip("+")
+        if raw.startswith("+"):
+            return raw[1:]
+        if raw.startswith("00"):
+            return raw[2:]
+        if raw.startswith("0"):
+            code = get_settings().default_country_code.strip()
+            if code.lower() in ("", "none"):
+                raise ValueError(
+                    "Start the WhatsApp number with your country code, like +92 300 1234567"
+                )
+            return code + raw[1:]
+        return raw
 
     @field_validator("shop_url")
     @classmethod

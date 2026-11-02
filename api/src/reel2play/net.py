@@ -74,3 +74,14 @@ def make_client(
     timeout: httpx.Timeout = DEFAULT_TIMEOUT, transport: httpx.BaseTransport | None = None
 ) -> httpx.Client:
     return httpx.Client(timeout=timeout, transport=transport, follow_redirects=False)
+
+
+def auth_headers(token: str) -> dict[str, str]:
+    """Bearer auth for most services. A Modal proxy token ("wk-<id>.ws-<secret>") is also
+    sent the way Modal's proxy auth expects: as Modal-Key and Modal-Secret."""
+    headers = {"Authorization": f"Bearer {token}"}
+    key, dot, secret = token.partition(".")
+    if dot and key.startswith("wk-") and secret.startswith("ws-"):
+        headers["Modal-Key"] = key
+        headers["Modal-Secret"] = secret
+    return headers

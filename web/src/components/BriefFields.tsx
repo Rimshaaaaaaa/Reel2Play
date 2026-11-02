@@ -40,10 +40,11 @@ export function BriefFields({ fields, set, children, pricePerProduct = false }: 
           <span>WhatsApp number for orders</span>
           <input
             inputMode="tel"
-            placeholder="923001234567"
+            placeholder="+92 300 1234567"
             value={fields.whatsappNumber}
             onChange={(e) => set("whatsappNumber", e.target.value)}
           />
+          <small>Include your country code, like +92, +971 or +44.</small>
         </label>
         <label className="field">
           <span>Or your shop link</span>

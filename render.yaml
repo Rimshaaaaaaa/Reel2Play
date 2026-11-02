@@ -19,6 +19,8 @@ services:
         value: live
       - key: WORKER_ENABLED
         value: "true"
+      - key: DEFAULT_COUNTRY_CODE
+        value: none
       - key: DATABASE_URL
         sync: false
       - key: SECRET_KEY

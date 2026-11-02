@@ -16,7 +16,7 @@ import httpx
 
 from reel2play.ai.config import ReasoningStyle, ResolvedEndpoint
 from reel2play.ai.messages import ChatRequest, ChatResponse, Message, Usage
-from reel2play.net import ExternalServiceError, make_client, raise_for_status
+from reel2play.net import ExternalServiceError, auth_headers, make_client, raise_for_status
 
 FIXTURES_DIR = Path(__file__).with_name("fixtures")
 
@@ -72,7 +72,7 @@ class OpenAICompatibleProvider:
         response = self._client.post(
             self._endpoint.base_url.rstrip("/") + "/chat/completions",
             json=self.build_body(request),
-            headers={"Authorization": f"Bearer {self._endpoint.api_key}"},
+            headers=auth_headers(self._endpoint.api_key),
         )
         raise_for_status(self._endpoint.config.label, response)
         parsed = parse_completion(self._endpoint.config.label, response.json())

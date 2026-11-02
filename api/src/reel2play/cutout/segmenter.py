@@ -20,7 +20,13 @@ import numpy as np
 from numpy.typing import NDArray
 
 from reel2play.analysis import Box
-from reel2play.net import ExternalServiceError, make_client, raise_for_status, with_retries
+from reel2play.net import (
+    ExternalServiceError,
+    auth_headers,
+    make_client,
+    raise_for_status,
+    with_retries,
+)
 from reel2play.settings import AIMode, Settings
 
 SERVICE = "SAM 3.1 on Modal"
@@ -69,9 +75,7 @@ class Sam3Client:
         }
 
         def call() -> dict[str, object]:
-            response = self._client.post(
-                self._url, json=body, headers={"Authorization": f"Bearer {self._token}"}
-            )
+            response = self._client.post(self._url, json=body, headers=auth_headers(self._token))
             raise_for_status(SERVICE, response)
             data: dict[str, object] = response.json()
             return data
@@ -116,9 +120,7 @@ class Sam3Tracker:
         }
 
         def call() -> dict[str, object]:
-            response = self._client.post(
-                self._url, json=body, headers={"Authorization": f"Bearer {self._token}"}
-            )
+            response = self._client.post(self._url, json=body, headers=auth_headers(self._token))
             raise_for_status(SERVICE, response)
             data: dict[str, object] = response.json()
             return data
