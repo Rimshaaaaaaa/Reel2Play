@@ -49,7 +49,8 @@ image = (
 
 @app.cls(
     image=image,
-    gpu="L4",
+    # L4 first; Modal moves to an A10G when no L4 is free, instead of queueing for minutes.
+    gpu=["L4", "A10G"],
     volumes={"/root/.cache/huggingface": hf_cache},
     secrets=[modal.Secret.from_name("huggingface")],
     scaledown_window=300,
