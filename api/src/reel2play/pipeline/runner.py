@@ -7,6 +7,7 @@ streams those entries as live progress, and the why panel shows them afterwards.
 
 from __future__ import annotations
 
+import re
 import uuid
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -160,12 +161,20 @@ def _context(session: Session, ad: Ad) -> StepContext:
     )
 
 
+SECRET = re.compile(r"(?i)\b(bearer\s+|token[=:]\s*|key[=:]\s*)[^\s'\"]+")
+
+
+def redact(text: str) -> str:
+    """Hide anything that looks like a credential before it is stored or shown."""
+    return SECRET.sub(r"\1***", text)
+
+
 def _give_up(session: Session, payload: dict[str, Any], error: str) -> None:
     ad = session.get(Ad, uuid.UUID(payload["ad_id"]))
     if ad is None or ad.status in TERMINAL:
         return
     ad.status = AdStatus.FAILED
-    ad.error = error.split(": ", 1)[-1]
+    ad.error = redact(error.split(": ", 1)[-1])
     audit.record(
         session,
         actor="system",
