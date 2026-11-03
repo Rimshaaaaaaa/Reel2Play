@@ -7,15 +7,23 @@ tested game with link-preview tags, sandboxed like every game the API serves.
 from __future__ import annotations
 
 import re
+import time
 import uuid
 from collections import OrderedDict
 from threading import Lock
+from urllib.parse import quote
 
 from fastapi import APIRouter, HTTPException, Response, status
 from sqlalchemy import select
 
 from reel2play.deps import SessionDep, SettingsDep, StorageDep
-from reel2play.media.storage import MediaStorage
+from reel2play.media.storage import (
+    InvalidKeyError,
+    MediaStorage,
+    check_key,
+    sign,
+    verify_signature,
+)
 from reel2play.models import Ad, AdStatus, Export, ExportKind, Shop
 from reel2play.publish.hosted import (
     SLUG_ALPHABET,
@@ -107,3 +115,30 @@ def serve_page(
             "Referrer-Policy": "no-referrer",
         },
     )
+
+
+PAGE_LINK_TTL_S = 3600
+
+
+def page_url(settings: Settings, key: str, ttl_seconds: int = PAGE_LINK_TTL_S) -> str:
+    """A signed link to one stored build, served by the API as a sandboxed page. Storage
+    services such as Supabase send ``.html`` as plain text, so a build is never shown
+    straight from storage."""
+    expires_at = int(time.time()) + ttl_seconds
+    signature = sign(settings.secret_key.get_secret_value(), check_key(key), expires_at)
+    base = settings.api_base_url.rstrip("/")
+    return f"{base}/pages/{quote(key)}?exp={expires_at}&sig={signature}"
+
+
+@router.get("/pages/{key:path}")
+def signed_page(
+    key: str, exp: int, sig: str, storage: StorageDep, settings: SettingsDep
+) -> Response:
+    try:
+        check_key(key)
+    except InvalidKeyError as exc:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "not found") from exc
+    secret = settings.secret_key.get_secret_value()
+    if not key.endswith(".html") or not verify_signature(secret, key, exp, sig):
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "link expired or invalid")
+    return serve_page(storage, settings, key, cache="private, max-age=300")
