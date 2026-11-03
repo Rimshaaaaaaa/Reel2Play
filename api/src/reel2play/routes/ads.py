@@ -15,6 +15,7 @@ from reel2play.deps import SessionDep, SettingsDep, StorageDep
 from reel2play.models import Ad, AdStatus, Analysis, Build, Export, ExportKind, Sprite
 from reel2play.publish.embed import embeds
 from reel2play.publish.hosted import page_link
+from reel2play.routes.game_page import page_url
 
 router = APIRouter(prefix="/api/ads", tags=["ads"])
 
@@ -249,7 +250,7 @@ def get_ad(
             for s in sprites
         ],
         template=ad.template,
-        build_url=storage.signed_url(latest.html_key) if latest else None,
+        build_url=page_url(settings, latest.html_key) if latest else None,
         report=_report(ad, storage),
         share=_share(session, ad, storage, settings.share_base, game_title(latest)),
         progress=[
