@@ -11,6 +11,7 @@ Auth: a Modal proxy token, sent as ``Bearer <id>.<secret>``.
 from __future__ import annotations
 
 import base64
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -31,6 +32,17 @@ from reel2play.settings import AIMode, Settings
 
 SERVICE = "SAM 3.1 on Modal"
 Mask = NDArray[np.bool_]
+
+
+def answered(call: Callable[[], dict[str, object]], attempts: int) -> dict[str, object]:
+    """Call SAM 3.1; no answer in time (Modal may be waiting for a free GPU) becomes an
+    ``ExternalServiceError``, so callers fall back to code instead of failing the game."""
+    try:
+        return with_retries(call, attempts=attempts, base_delay=2.0)
+    except httpx.HTTPError as exc:
+        raise ExternalServiceError(
+            SERVICE, f"no answer ({type(exc).__name__})", status=504
+        ) from exc
 
 
 @dataclass(frozen=True)
@@ -63,7 +75,7 @@ class Sam3Client:
     ) -> None:
         self._url = url
         self._token = token
-        self._client = client or make_client(httpx.Timeout(120.0, connect=10.0))
+        self._client = client or make_client(httpx.Timeout(90.0, connect=10.0))
         self._max_masks = max_masks
 
     def segment(self, image_jpeg: bytes, prompt: str) -> list[MaskCandidate]:
@@ -80,7 +92,7 @@ class Sam3Client:
             data: dict[str, object] = response.json()
             return data
 
-        data = with_retries(call, attempts=3, base_delay=2.0)
+        data = answered(call, attempts=2)
         width, height = int(str(data["width"])), int(str(data["height"]))
         masks = data.get("masks")
         if not isinstance(masks, list):
@@ -125,7 +137,7 @@ class Sam3Tracker:
             data: dict[str, object] = response.json()
             return data
 
-        data = with_retries(call, attempts=2, base_delay=2.0)
+        data = answered(call, attempts=1)
         width, height = int(str(data["width"])), int(str(data["height"]))
         frames = data.get("frames")
         if not isinstance(frames, list) or len(frames) != len(frames_jpeg):
