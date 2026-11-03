@@ -11,6 +11,7 @@ Auth: a Modal proxy token, sent as ``Bearer <id>.<secret>``.
 from __future__ import annotations
 
 import base64
+import time
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Protocol
@@ -34,12 +35,20 @@ SERVICE = "SAM 3.1 on Modal"
 Mask = NDArray[np.bool_]
 
 
+COOLDOWN_S = 600.0
+SAM_DOWN: dict[str, float] = {"until": 0.0}
+
+
 def answered(call: Callable[[], dict[str, object]], attempts: int) -> dict[str, object]:
     """Call SAM 3.1; no answer in time (Modal may be waiting for a free GPU) becomes an
-    ``ExternalServiceError``, so callers fall back to code instead of failing the game."""
+    ``ExternalServiceError``, so callers fall back to code instead of failing the game.
+    After no answer, SAM is skipped for ten minutes so later steps and games do not wait."""
+    if time.monotonic() < SAM_DOWN["until"]:
+        raise ExternalServiceError(SERVICE, "skipped: no answer a moment ago", status=503)
     try:
         return with_retries(call, attempts=attempts, base_delay=2.0)
     except httpx.HTTPError as exc:
+        SAM_DOWN["until"] = time.monotonic() + COOLDOWN_S
         raise ExternalServiceError(
             SERVICE, f"no answer ({type(exc).__name__})", status=504
         ) from exc
@@ -75,7 +84,7 @@ class Sam3Client:
     ) -> None:
         self._url = url
         self._token = token
-        self._client = client or make_client(httpx.Timeout(90.0, connect=10.0))
+        self._client = client or make_client(httpx.Timeout(75.0, connect=10.0))
         self._max_masks = max_masks
 
     def segment(self, image_jpeg: bytes, prompt: str) -> list[MaskCandidate]:
@@ -92,7 +101,7 @@ class Sam3Client:
             data: dict[str, object] = response.json()
             return data
 
-        data = answered(call, attempts=2)
+        data = answered(call, attempts=1)
         width, height = int(str(data["width"])), int(str(data["height"]))
         masks = data.get("masks")
         if not isinstance(masks, list):
