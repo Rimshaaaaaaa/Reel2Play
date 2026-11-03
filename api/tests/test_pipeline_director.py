@@ -562,3 +562,20 @@ def test_ad_without_analysis_has_no_brief(client: TestClient, session: Session) 
     body = client.get(f"/api/ads/{ad.id}").json()
     assert body["brief"] is None
     assert body["sprites"] == []
+
+
+def test_sam_waiting_for_a_gpu_falls_back_to_the_code_cut_out() -> None:
+    calls: list[int] = []
+
+    def no_answer(request: httpx.Request) -> httpx.Response:
+        calls.append(1)
+        raise httpx.ReadTimeout("no GPU yet", request=request)
+
+    client = Sam3Client(
+        "https://x", "t", client=httpx.Client(transport=httpx.MockTransport(no_answer))
+    )
+    with pytest.raises(ExternalServiceError, match="no answer"):
+        client.segment(b"x", "shoe")
+    assert len(calls) == 2
+    result = cut_product(_product_frame(), "shoe", None, client)
+    assert (result.method, result.quality) == ("grabcut", "lower")
