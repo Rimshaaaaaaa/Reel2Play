@@ -20,7 +20,8 @@ from reel2play.settings import AppEnv, Settings
 
 HARNESS = Path(__file__).with_name("harness.py")
 REPLY_TIMEOUT_S = 90.0
-PLAYWRIGHT_IMAGE = "mcr.microsoft.com/playwright/python:v1.63.0-noble"
+PLAYWRIGHT_VERSION = "1.63.0"
+PLAYWRIGHT_IMAGE = f"mcr.microsoft.com/playwright/python:v{PLAYWRIGHT_VERSION}-noble"
 
 
 class HarnessError(RuntimeError):
@@ -113,8 +114,13 @@ class ModalHarness:
         os.environ.setdefault("MODAL_TOKEN_ID", settings.modal_token_id.get_secret_value())
         os.environ.setdefault("MODAL_TOKEN_SECRET", settings.modal_token_secret.get_secret_value())
         app = modal.App.lookup(settings.playtest_app, create_if_missing=True)
-        image = modal.Image.from_registry(PLAYWRIGHT_IMAGE).add_local_file(
-            str(HARNESS), "/harness/harness.py"
+        # The browsers come with the image; Modal runs its own Python, which needs the
+        # Playwright package of the same version (installed when the image is built).
+        image = (
+            modal.Image.from_registry(PLAYWRIGHT_IMAGE)
+            .env({"PLAYWRIGHT_BROWSERS_PATH": "/ms-playwright"})
+            .pip_install(f"playwright=={PLAYWRIGHT_VERSION}")
+            .add_local_file(str(HARNESS), "/harness/harness.py")
         )
         self._sandbox = modal.Sandbox.create(
             app=app, image=image, block_network=True, timeout=15 * 60, cpu=2.0, memory=2048
