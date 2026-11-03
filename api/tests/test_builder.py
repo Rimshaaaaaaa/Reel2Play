@@ -357,6 +357,11 @@ def test_pipeline_builds_a_game(
     preview = client.get(body["build_url"].removeprefix("http://testserver"))
     assert preview.headers["content-type"].startswith("text/html")
     assert "sandbox allow-scripts" in preview.headers["content-security-policy"]
+    assert "/pages/" in body["build_url"]  # served by the API, not straight from storage
+    tampered = body["build_url"].removeprefix("http://testserver").replace("sig=", "sig=0")
+    assert client.get(tampered).status_code == 403
+    assert client.get("/pages/ads/x/notes.txt?exp=9999999999&sig=x").status_code == 403
+    assert client.get("/pages/../secret.html?exp=9999999999&sig=x").status_code == 404
 
 
 def test_urdu_sample_builds_a_runner(
