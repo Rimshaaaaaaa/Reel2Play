@@ -30,7 +30,7 @@ from reel2play.cutout.cut import (
     clean_mask,
     cut_product,
 )
-from reel2play.cutout.segmenter import MaskCandidate, Sam3Client, build_segmenter
+from reel2play.cutout.segmenter import SAM_DOWN, MaskCandidate, Sam3Client, build_segmenter
 from reel2play.deps import get_storage
 from reel2play.jobs import enqueue
 from reel2play.jobs.queue import run_due
@@ -564,7 +564,10 @@ def test_ad_without_analysis_has_no_brief(client: TestClient, session: Session) 
     assert body["sprites"] == []
 
 
-def test_sam_waiting_for_a_gpu_falls_back_to_the_code_cut_out() -> None:
+def test_sam_waiting_for_a_gpu_falls_back_to_the_code_cut_out(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setitem(SAM_DOWN, "until", 0.0)
     calls: list[int] = []
 
     def no_answer(request: httpx.Request) -> httpx.Response:
@@ -576,6 +579,8 @@ def test_sam_waiting_for_a_gpu_falls_back_to_the_code_cut_out() -> None:
     )
     with pytest.raises(ExternalServiceError, match="no answer"):
         client.segment(b"x", "shoe")
-    assert len(calls) == 2
+    assert len(calls) == 1
+    # SAM is now skipped for a while: the cut-out is made in code without calling it again.
     result = cut_product(_product_frame(), "shoe", None, client)
     assert (result.method, result.quality) == ("grabcut", "lower")
+    assert len(calls) == 1
