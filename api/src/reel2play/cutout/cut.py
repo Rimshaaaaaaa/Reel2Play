@@ -7,6 +7,7 @@ as lower quality, as the spec allows.
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 
 import cv2
@@ -15,6 +16,9 @@ from numpy.typing import NDArray
 
 from reel2play.analysis import Box
 from reel2play.cutout.segmenter import Mask, MaskCandidate, Segmenter
+from reel2play.net import ExternalServiceError
+
+log = logging.getLogger(__name__)
 
 SPRITE_MAX_SIDE = 512
 MIN_AREA = 0.01
@@ -118,7 +122,12 @@ def cut_product(
     method, quality, score = "grabcut", "lower", 0.0
     chosen: Mask | None = None
     if segmenter is not None:
-        candidate = choose_mask(segmenter.segment(frame_jpeg, prompt), box)
+        try:
+            found = segmenter.segment(frame_jpeg, prompt)
+        except ExternalServiceError as exc:
+            log.warning("SAM 3.1 did not answer, cutting out in code: %s", exc)
+            found = []
+        candidate = choose_mask(found, box)
         if candidate is not None:
             chosen, method, quality, score = candidate.mask, segmenter.name, "good", candidate.score
     if chosen is None:
