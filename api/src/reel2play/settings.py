@@ -5,8 +5,9 @@ from __future__ import annotations
 from enum import StrEnum
 from functools import lru_cache
 from pathlib import Path
+from typing import Any
 
-from pydantic import Field, SecretStr
+from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -40,6 +41,12 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=("../.env", ".env"), env_file_encoding="utf-8", extra="ignore"
     )
+
+    @field_validator("*", mode="before")
+    @classmethod
+    def _strip(cls, value: Any) -> Any:
+        """Values pasted into a dashboard often end in a newline; it breaks headers."""
+        return value.strip() if isinstance(value, str) else value
 
     app_env: AppEnv = AppEnv.LOCAL
     web_base_url: str = "http://localhost:5173"
