@@ -127,7 +127,23 @@ class ModalHarness:
             stdin.drain()
 
         self._channel = LineChannel(iter(self._process.stdout), write, timeout)
-        self._channel.receive()
+        try:
+            self._channel.receive()
+        except HarnessError as exc:
+            why = self._stderr_tail()
+            self._sandbox.terminate()
+            if why:
+                raise HarnessError(f"{exc} ({why})") from exc
+            raise
+
+    def _stderr_tail(self) -> str:
+        """The last lines the harness wrote to stderr, to say why it stopped."""
+        try:
+            text = str(self._process.stderr.read())
+        except Exception:  # pragma: no cover - the sandbox may already be gone
+            return ""
+        lines = [line.strip() for line in text.strip().splitlines() if line.strip()]
+        return " | ".join(lines[-3:])[-400:]
 
     def call(self, cmd: str, **args: Any) -> dict[str, Any]:
         return self._channel.call(cmd, **args)
