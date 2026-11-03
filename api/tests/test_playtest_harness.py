@@ -267,6 +267,14 @@ def test_modal_harness_blocks_the_network(monkeypatch: pytest.MonkeyPatch) -> No
             created["registry"] = name
             return Image()
 
+        def env(self, values: dict[str, str]) -> Image:
+            created["env"] = values
+            return self
+
+        def pip_install(self, *packages: str) -> Image:
+            created["pip"] = packages
+            return self
+
         def add_local_file(self, local: str, remote: str) -> Image:
             created["file"] = remote
             return self
@@ -285,6 +293,8 @@ def test_modal_harness_blocks_the_network(monkeypatch: pytest.MonkeyPatch) -> No
     assert created["app"] == "app:reel2play-playtest"
     assert created["exec"] == ("python", "/harness/harness.py")
     assert created["registry"].startswith("mcr.microsoft.com/playwright/python:v1.63.0")
+    # Modal runs its own Python in the image, so the Playwright package is installed for it.
+    assert created["pip"] == ("playwright==1.63.0",)
     assert harness.call("state") == {"ok": True, "x": 1}
     harness.close()
     assert Sandbox.terminated
