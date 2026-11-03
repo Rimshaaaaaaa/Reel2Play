@@ -124,6 +124,7 @@ export function buildUi(root: HTMLElement, config: GameConfig, platform: Platfor
     ? el("a", { class: "r2p-btn", href: platform.ctaHref, target: "_blank", rel: "noopener",
       "data-r2p": "cta", text: text.ctaLabel })
     : el("button", { class: "r2p-btn", type: "button", "data-r2p": "cta", text: text.ctaLabel });
+  const orderHref = cta.getAttribute("href");
   const replay = el("button", { class: "r2p-btn r2p-quiet", type: "button", "data-r2p": "replay",
     text: t.playAgain });
   const share = el("a", { class: "r2p-btn r2p-quiet", href: "#", target: "_blank",
@@ -200,6 +201,12 @@ export function buildUi(root: HTMLElement, config: GameConfig, platform: Platfor
       captionLine.hidden = true;
       resultTitle.textContent = result.won ? text.win : text.lose;
       end.dataset.won = String(result.won);
+      // Prizes are for winners: a lost round still shows the offer, but no code, and the
+      // order message it opens carries no code either.
+      if (couponLine) couponLine.hidden = !result.won;
+      if (orderHref && config.coupon) {
+        cta.setAttribute("href", result.won ? orderHref : withoutCode(orderHref, config.coupon));
+      }
       const goal = Math.round(result.goal ?? 0);
       // document.URL, not the location object: Meta's review flags any location write-alike.
       const link = platform.canShare && goal > 0 && typeof document !== "undefined"
@@ -224,4 +231,21 @@ export function buildUi(root: HTMLElement, config: GameConfig, platform: Platfor
       if (href) cta.setAttribute("href", href.split(config.coupon).join(code));
     },
   };
+}
+
+/** The order message's code line, as the API writes it (builder/cta.py CODE_LINES). */
+const CODE_LABELS = [" My code: ", " میرا کوڈ: "];
+
+/** The order link without the code line, for a round that was not won. */
+export function withoutCode(href: string, code: string): string {
+  const at = href.indexOf("?text=");
+  if (at < 0) return href;
+  let message: string;
+  try {
+    message = decodeURIComponent(href.slice(at + 6));
+  } catch {
+    return href;
+  }
+  for (const label of CODE_LABELS) message = message.split(label + code).join("");
+  return href.slice(0, at + 6) + encodeURIComponent(message);
 }
